@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 #
 # Executes commands at the start of an interactive session.
 #
@@ -11,3 +18,118 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+#
+# User Configuration
+#
+
+export AWS_PAGER="" # disable AWS cli paging
+export EDITOR="vim"
+
+bindkey '^n' autosuggest-accept
+
+# aliases
+[ -f ~/.kubectl_aliases ] && source ~/.kubectl_aliases
+
+alias c="clear"
+
+alias zshrc="vim ~/.zshrc && source ~/.zshrc"
+
+# Git
+alias g='git'
+
+alias gb='git branch -vv'
+alias gbd='git branch -d'
+alias gbD='git branch -D'
+
+alias gco='git checkout'
+alias gcom='git checkout master'
+alias gcb='git checkout -b'
+
+alias gc='git commit -v'
+alias gc!='git commit -v --amend'
+alias gcm='git commit -m'
+
+alias gd='git diff'
+alias gdca='git diff --cached'
+
+alias glg='git log --stat --max-count=10'
+alias glo='git log --oneline --decorate --color'
+
+alias gl='git pull'
+alias gp='git push'
+alias ggp='git push origin "$(git-branch-current 2> /dev/null)"'
+alias gpu='ggp --set-upstream'
+
+alias gsta='git stash'
+alias gstd='git stash drop'
+alias gstp='git stash pop'
+
+alias ga='git add'
+alias gaa='git add --all'
+alias grm='git rm'
+alias grmca='git rm --cached'
+
+alias gcl='git clone'
+alias gf='git fetch'
+alias gm='git merge'
+alias grh='git reset HEAD'
+alias grhh='git reset HEAD --hard'
+alias gst='git status'
+
+# Docker
+alias d='docker'
+
+alias dc='docker container'
+alias dcl='docker container ls'
+alias dclo='docker container logs'
+alias dcr='docker container run'
+
+alias di='docker image'
+alias dil='docker image ls'
+alias dib='docker image build'
+alias dit='docker image tag'
+alias dip='docker image push'
+
+alias dcom='docker-compose'
+alias dcomu='docker-compose up'
+alias dcomud='docker-compose up -d'
+alias dcomudb='docker-compose up -d --build'
+alias dcomd='docker-compose down'
+alias dcomlo='docker-compose logs -f'
+
+alias pk='proxychains4 -q kubectl'
+
+function flush_dns() {
+	dscacheutil -flushcache
+    sudo killall -HUP mDNSResponder
+}
+
+function pxyaws() {
+    proxychains4 -q /usr/local/bin/aws --profile none $@
+}
+
+function proxy_on() {
+    export AWS_PROFILE='none'
+    export HTTP_PROXY='http://localhost:8123'
+    export HTTPS_PROXY='http://localhost:8123'
+}
+
+function proxy_off() {
+    unset AWS_PROFILE
+    unset HTTP_PROXY
+    unset HTTPS_PROXY
+}
+
+if type go >/dev/null; then
+    export GOPATH=~/go/
+    export GOROOT=/usr/local/opt/go/libexec
+    export PATH=$PATH:$GOPATH/bin
+    export PATH=$PATH:$GOROOT/bin
+fi
+
+export PATH="$HOME/dev/bin:$PATH"
+export PATH="$PATH:/usr/local/kubebuilder/bin"

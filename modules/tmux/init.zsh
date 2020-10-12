@@ -8,6 +8,7 @@
 #   Xavier Cambar <xcambar@gmail.com>
 #
 
+
 # Return if requirements are not found.
 if (( ! $+commands[tmux] )); then
   return 1
