@@ -36,6 +36,8 @@ bindkey '^n' autosuggest-accept
 
 alias c="clear"
 
+alias vim="nvim"
+
 alias zshrc="vim ~/.zshrc && source ~/.zshrc"
 
 # Git
