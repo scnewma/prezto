@@ -126,6 +126,10 @@ function proxy_off() {
     unset HTTPS_PROXY
 }
 
+if type fzf-cd-widget >/dev/null 2>&1; then
+    bindkey '^G' fzf-cd-widget
+fi
+
 export FZF_PREVIEW_LINES=100
 if type bat >/dev/null 2>&1; then
     FZF_PREVIEW_CMD='bat --color=always --plain --line-range :$FZF_PREVIEW_LINES {}'
